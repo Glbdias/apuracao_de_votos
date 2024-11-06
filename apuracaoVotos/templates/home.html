@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projeto Final</title>
+</head>
+<body style="text-align: center; background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../static/images/centro.jpg')">
+<img style="width: 20rem;" src="../static/images/logo_fsg.webp">
+<h1 style="color: white; font-size: 50px; margin-top: 10rem"><strong>APURAÇÃO DE VOTOS</strong></h1>
+<button onclick="window.location.href='{% url 'inicio:votacao' %}'" style="cursor: pointer;width: 15rem; height: 3rem; border-radius: 1rem; border: none; background-color: #3368A9; color: white; margin-top: 5rem">
+    <b>VOTAÇÃO</b></button>
+</body>
+</html>

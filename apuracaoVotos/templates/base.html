@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Meu Projeto{% endblock %}</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <!-- Menu Fixo no Topo -->
+    <div class="menu-topo">
+        <ul>
+            <li><a href="{% url 'inicio:urnas' %}">Apuração Urnas</a></li>
+            <li><a href="{% url 'inicio:candidatos' %}">Candidatos</a></li>
+            <li><a href="{% url 'inicio:urnas' %}">Página 3</a></li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="conteudo">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
