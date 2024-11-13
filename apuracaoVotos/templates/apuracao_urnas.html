@@ -1,4 +1,73 @@
 {% extends "base.html" %}
 {% block content %}
-    <p>Urnas</p>
+<section id="apuracao" class="tela">
+    <h2 style="text-align: center">Apuração dos Votos</h2>
+      <h2 style="text-align: center">SELECIONE O ESTADO</h2>
+
+    <div style="display: flex; width: 100%;">
+ <div style="display: flex; justify-content: center; flex-direction: column; width: 100%">
+            <div style="width: 50%; margin: 0 auto">
+                {{ votos }}
+
+                <select class="select-card" onchange="filtrarPorEstado()">
+                    {%for sigla,estado in estados.items %}
+                        <option value="{{ sigla }}">{{ estado }}</option>
+                    {% endfor %}
+                </select>
+                <p class="card-votos">Total de Votos: <span id="total-votos">0</span></p>
+                <p class="card-votos">Votos Apurados: <span id="votos-apurados">0</span></p>
+            </div>
+        </div>
+
+<!--        <div style="display: flex; justify-content: center; flex-direction: column; width: 100%">-->
+<!--            <div style="width: 50%; margin: 0 auto">-->
+<!--                <h2>Candidatos e Porcentagens</h2>-->
+<!--                    <div class="candidato">-->
+<!--                        <img src="/chamber.webp" alt="Candidato A">-->
+<!--                        <p>Candidato A <span id="votos-cand-a">0</span> votos</p> &lt;!&ndash; Quantidade de votos &ndash;&gt;-->
+<!--                        <div class="barra-porcentagem-container">-->
+<!--                            <div class="barra-porcentagem" id="barra-a"></div>-->
+<!--                        </div>-->
+<!--                        <span class="porcentagem-texto" id="cand-a">0%</span>-->
+<!--                    </div>-->
+<!--                    <div class="candidato">-->
+<!--                        <img src="/reyna.webp" alt="Candidato B">-->
+<!--                        <p>Candidato B <span id="votos-cand-b">0</span> votos</p> &lt;!&ndash; Quantidade de votos &ndash;&gt;-->
+<!--                        <div class="barra-porcentagem-container">-->
+<!--                            <div class="barra-porcentagem" id="barra-b"></div>-->
+<!--                        </div>-->
+<!--                        <span class="porcentagem-texto" id="cand-b">0%</span>-->
+<!--                    </div>-->
+<!--                    <div class="candidato">-->
+<!--                        <img src="/yoru.webp" alt="Candidato C">-->
+<!--                        <p>Candidato C <span id="votos-cand-c">0</span> votos</p> &lt;!&ndash; Quantidade de votos &ndash;&gt;-->
+<!--                        <div class="barra-porcentagem-container">-->
+<!--                            <div class="barra-porcentagem" id="barra-c"></div>-->
+<!--                        </div>-->
+<!--                        <span class="porcentagem-texto" id="cand-c">0%</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+<script>
+    async function buscarVotos() {
+            try {
+                const response = await fetch('/get_votos/'); // URL da view Django
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar dados");
+                }
+                const data = await response.json();
+
+                data.votos.forEach((voto) => {
+                    console.log("Voto", voto);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Chama a função quando a página carrega
+        window.onload = buscarVotos;
+</script>
+</section>
 {% endblock %}
