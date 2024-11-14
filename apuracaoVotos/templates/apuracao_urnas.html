@@ -43,14 +43,14 @@
 
         <script>
             async function filtrarPorZona(zonaId) {
-                await buscarVotos(); // Chama novamente a função para atualizar os votos
+                await buscarVotos(true); // Chama novamente a função para atualizar os votos
             }
 
             async function filtrarPorSessao(sessaoId) {
-                await buscarVotos(); // Chama novamente a função para atualizar os votos
+                await buscarVotos(false); // Chama novamente a função para atualizar os votos
             }
 
-            async function buscarVotos() {
+            async function buscarVotos(carregaFiltro) {
                 try {
                     const response = await fetch('/get_sessoes/?zona=' + document.getElementById('zona').value + '&sessao=' + document.getElementById('sessao').value); // URL da view Django
                     if (!response.ok) {
@@ -58,22 +58,28 @@
                     }
                     const data = await response.json();
 
-                    const sessoes = document.getElementById('sessao');
+                    if (carregaFiltro) {
 
-                    while (sessoes.options.length > 0) {
-                        sessoes.remove(0);
-                    }
-                    const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'Selecione a sessão';
-                    sessoes.appendChild(option);
+                        const sessoes = document.getElementById('sessao');
 
-                    data.sessoes.forEach((sessao) => {
+                        while (sessoes.options.length > 0) {
+                            sessoes.remove(0);
+                        }
                         const option = document.createElement('option');
-                        option.value = sessao;
-                        option.textContent = sessao;
+                        option.value = '';
+                        option.textContent = 'Selecione a sessão';
                         sessoes.appendChild(option);
-                    });
+
+                        data.sessoes.forEach((sessao) => {
+                            const option = document.createElement('option');
+                            option.value = sessao;
+                            option.textContent = sessao;
+                            sessoes.appendChild(option);
+                        });
+                    }
+
+                    document.getElementById('votos-apurados').innerText = data.qtdVotosApurados;
+
                 } catch (error) {
                     console.error(error);
                 }

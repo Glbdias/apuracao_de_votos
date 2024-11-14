@@ -55,11 +55,18 @@ def candidatos(request):
 
 def get_sessoes(request):
     ses = request.session['configuracao'][request.GET['zona'].strip()]['sessoes'].keys()
+    qtdZonas = 0
+    print(request.session['configuracao'][request.GET['zona'].strip()]['sessoes']['001A']['votos'])
+    if request.GET.get('zona') and request.GET.get('sessao'):
+        qtdZonas = request.session['configuracao'][request.GET['zona'].strip()]['sessoes'][request.GET['sessao'].strip()]['votos']
+    elif request.GET['zona']:
+        qtdZonas = request.session['configuracao'][request.GET['zona'].strip()]['total_votos']
+
     sessoes = []
     for i in ses:
         sessoes.append(i)
 
-    return JsonResponse({"sessoes": sessoes})
+    return JsonResponse({"sessoes": sessoes, 'qtdVotosApurados': qtdZonas})
 
 
 def post_importar(request):
@@ -101,7 +108,9 @@ def organiza_arquivo(arquivo, est):
     json_data = json.loads(file_content)  # Converte a string para um dicionário Python
 
     for i in json_data:
+        est.session['configuracao'][i['idZona']]['total_votos'] += i['votosValidos']
         est.session['votos_apurados'] += i['votosValidos']
+        est.session['configuracao'][i['idZona']]['sessoes'][i['idSecao']]['votos'] += i['votosValidos']
 
     est.session.modified = True
 
@@ -147,7 +156,7 @@ def organiza_configuracao_apuracao(dado, ent):
 
             for p in i['secoes']:
                 if not dic[i['idZona']]['sessoes'].get(p['idSecao']):
-                    dic[i['idZona']]['sessoes'][p['idSecao']] = {'quantidadeEleitores': p['quantidadeEleitores']}
+                    dic[i['idZona']]['sessoes'][p['idSecao']] = {'quantidadeEleitores': p['quantidadeEleitores'], 'votos': 0}
 
                     ent.session['totais'] += p['quantidadeEleitores']
 
