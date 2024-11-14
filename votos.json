@@ -1,0 +1,12 @@
+[{
+  "idSecao": "001A",
+  "idZona": "001",
+  "quantidadePresentes": 15,
+  "votosValidos": 10,
+  "candidatos": [
+    {
+      "nomeCandidato": "Carlos Silva",
+      "quantidadeVotos": 10
+    }
+  ]
+}]

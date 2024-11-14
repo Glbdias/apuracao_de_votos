@@ -1,0 +1,66 @@
+{
+  "nomeEleicao": "Eleição Municipal Caxias do Sul 2024",
+  "candidatos": [
+    "Carlos Silva",
+    "Maria Oliveira",
+    "José Santos",
+    "Ana Costa",
+    "Ricardo Pereira",
+    "Fernanda Souza",
+    "Gabriel Almeida",
+    "Luciana Martins",
+    "Eduardo Ferreira",
+    "Patrícia Rocha",
+    "Joaquim Ramos",
+    "Juliana Lima",
+    "Roberto Pereira",
+    "Isabela Santos",
+    "Felipe Costa",
+    "Larissa Rodrigues",
+    "Miguel Silva",
+    "Raquel Oliveira",
+    "Paulo Souza",
+    "Camila Freitas"
+  ],
+  "zonasEleitorais": [
+    {
+      "idZona": "001",
+      "secoes": [
+        {
+          "idSecao": "001A",
+          "quantidadeEleitores": 1500
+        },
+        {
+          "idSecao": "001B",
+          "quantidadeEleitores": 1200
+        }
+      ]
+    },
+    {
+      "idZona": "002",
+      "secoes": [
+        {
+          "idSecao": "002A",
+          "quantidadeEleitores": 1000
+        },
+        {
+          "idSecao": "002B",
+          "quantidadeEleitores": 950
+        }
+      ]
+    },
+    {
+      "idZona": "003",
+      "secoes": [
+        {
+          "idSecao": "003A",
+          "quantidadeEleitores": 800
+        },
+        {
+          "idSecao": "003B",
+          "quantidadeEleitores": 700
+        }
+      ]
+    }
+  ]
+}

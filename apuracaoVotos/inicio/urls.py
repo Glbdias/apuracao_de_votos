@@ -8,6 +8,8 @@ urlpatterns = [
     path('votacao/', views.menu, name='votacao'),
     path('urnas/', views.urnas, name='urnas'),
     path('candidatos/', views.candidatos, name='candidatos'),
-    path('get_votos/', views.get_votos, name='get_votos'),
-    path('importacao/', views.post_importar, name='post_importacao')
+    path('get_votos/', views.get_votos, name='get_urnas'),
+    path('importacao/', views.post_importar, name='post_importacao'),
+    path('inicializa_votacao/', views.inicializa_votacao, name='inicializa_votacao'),
+    path('configuracao_sessao/', views.configuracao_sessao, name='configuracao_sessao'),
 ]
