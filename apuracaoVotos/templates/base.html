@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
-    <!-- Menu Fixo no Topo -->
-    <div class="menu-topo">
-        <ul>
-            <li><a href="{% url 'inicio:post_importacao' %}">Importar Arquivos</a></li>
-            <li><a href="{% url 'inicio:urnas' %}">Apuração Urnas</a></li>
-            <li><a href="{% url 'inicio:candidatos' %}">Candidatos</a></li>
-<!--            <li><a href="{% url 'inicio:inicializa_votacao' %}">Inicialização</a></li>-->
-        </ul>
-    </div>
+<!-- Menu Fixo no Topo -->
+<div class="menu-topo">
+    <ul>
+        <li><a href="{% url 'inicio:post_importacao' %}">Importar Arquivos</a></li>
+        <li><a href="{% url 'inicio:urnas' %}">Apuração Urnas</a></li>
+        <li><a href="{% url 'inicio:candidatos' %}">Candidatos</a></li>
+        <!--            <li><a href="{% url 'inicio:inicializa_votacao' %}">Inicialização</a></li>-->
+    </ul>
+</div>
 
-    <!-- Conteúdo Principal -->
-    <div class="conteudo">
-        {% block content %}
-        {% endblock %}
-    </div>
+<!-- Conteúdo Principal -->
+<div class="conteudo">
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>

@@ -53,23 +53,19 @@ def candidatos(request):
     return render(request, 'candidatos.html')
 
 
-def get_votos(request):
-    if request.method == "GET":
-        # Simulação de dados dos votos
-        votos = [
-            {"candidato": "Candidato 1", "votos": 3500, "percentual": "35%"},
-            {"candidato": "Candidato 2", "votos": 2750, "percentual": "27.5%"},
-            {"candidato": "Candidato 3", "votos": 1200, "percentual": "12%"},
-            {"candidato": "Candidato 4", "votos": 950, "percentual": "9.5%"}
-        ]
-        return JsonResponse({"votos": votos})
+def get_sessoes(request):
+    ses = request.session['configuracao'][request.GET['zona'].strip()]['sessoes'].keys()
+    sessoes = []
+    for i in ses:
+        sessoes.append(i)
+
+    return JsonResponse({"sessoes": sessoes})
 
 
 def post_importar(request):
     retorno = {'sucesso': True,
                'mensagem': ''}
     if request.method == "POST":
-        print(request.FILES['file'])
         organiza_arquivo(request.FILES['file'], request)
         return JsonResponse(retorno)
     return render(request, 'importacao.html')

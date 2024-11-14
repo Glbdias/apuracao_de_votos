@@ -1,69 +1,86 @@
 {% extends "base.html" %}
 {% block content %}
-<section id="apuracao" class="tela" style="max-width: 1200px; margin: 0 auto; padding: 30px;">
-    <h2 style="text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Apuração dos Votos</h2>
-    <h3 style="text-align: center; font-size: 20px; margin-bottom: 30px;">SELECIONE A ZONA E A SESSÃO</h3>
+    <section id="apuracao" class="tela" style="max-width: 1200px; margin: 0 auto; padding: 30px;">
+        <h2 style="text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Apuração dos Votos</h2>
+        <h3 style="text-align: center; font-size: 20px; margin-bottom: 30px;">SELECIONE A ZONA E A SESSÃO</h3>
 
-    <!-- Filtros em uma linha com espaçamento adequado -->
-    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 40px;">
-        <!-- Filtro de Zona -->
-        <div style="flex: 1; max-width: 400px;">
-            <label for="zona" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a Zona</label>
-            <select id="zona" class="select-card" onchange="filtrarPorZona(this.value)" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
-                <option value="">Selecione a Zona</option>
-                {% for zona in zonas %}
-                    <option value="{{ zona }}">{{ zona }}</option>
-                {% endfor %}
-            </select>
+        <!-- Filtros em uma linha com espaçamento adequado -->
+        <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 40px;">
+            <!-- Filtro de Zona -->
+            <div style="flex: 1; max-width: 400px;">
+                <label for="zona" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a
+                    Zona</label>
+                <select id="zona" class="select-card" onchange="filtrarPorZona(this.value)"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
+                    <option value="">Selecione a Zona</option>
+                    {% for zona in zonas %}
+                        <option value="{{ zona }}">{{ zona }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Filtro de Sessão -->
+            <div style="flex: 1; max-width: 400px;">
+                <label for="sessao" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a
+                    Sessão</label>
+                <select id="sessao" class="select-card" onchange="filtrarPorSessao(this.value)"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
+                    <option value="">Selecione a Sessão</option>
+                    {% for sessao in sessoes %}
+                        <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
-        <!-- Filtro de Sessão -->
-        <div style="flex: 1; max-width: 400px;">
-            <label for="sessao" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a Sessão</label>
-            <select id="sessao" class="select-card" onchange="filtrarPorSessao(this.value)" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
-                <option value="">Selecione a Sessão</option>
-                {% for sessao in sessoes %}
-                    <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
-                {% endfor %}
-            </select>
+        <!-- Exibição de votos e resultados -->
+        <div style="text-align: center; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <p class="card-votos" style="font-size: 20px; font-weight: 600; color: #333;">Total de Votos: <span
+                    id="total-votos" style="font-weight: bold; color: #2d3748;">{{ totalVotos }}</span></p>
+            <p class="card-votos" style="font-size: 20px; font-weight: 600; color: #333;">Votos Apurados: <span
+                    id="votos-apurados" style="font-weight: bold; color: #2d3748;">{{ votosApurados }}</span></p>
         </div>
-    </div>
 
-    <!-- Exibição de votos e resultados -->
-    <div style="text-align: center; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-        <p class="card-votos" style="font-size: 20px; font-weight: 600; color: #333;">Total de Votos: <span id="total-votos" style="font-weight: bold; color: #2d3748;">{{ totalVotos }}</span></p>
-        <p class="card-votos" style="font-size: 20px; font-weight: 600; color: #333;">Votos Apurados: <span id="votos-apurados" style="font-weight: bold; color: #2d3748;">{{ votosApurados }}</span></p>
-    </div>
-
-<script>
-    async function filtrarPorZona(zonaId) {
-        console.log("Zona Selecionada:", zonaId);
-        await buscarVotos(); // Chama novamente a função para atualizar os votos
-    }
-
-    async function filtrarPorSessao(sessaoId) {
-        console.log("Sessão Selecionada:", sessaoId);
-        await buscarVotos(); // Chama novamente a função para atualizar os votos
-    }
-
-    async function buscarVotos() {
-        try {
-            const response = await fetch('/get_votos/'); // URL da view Django
-            if (!response.ok) {
-                throw new Error("Erro ao buscar dados");
+        <script>
+            async function filtrarPorZona(zonaId) {
+                await buscarVotos(); // Chama novamente a função para atualizar os votos
             }
-            const data = await response.json();
 
-            data.votos.forEach((voto) => {
-                console.log("Voto", voto);
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
+            async function filtrarPorSessao(sessaoId) {
+                await buscarVotos(); // Chama novamente a função para atualizar os votos
+            }
 
-    // Chama a função quando a página carrega
-    window.onload = buscarVotos;
-</script>
-</section>
+            async function buscarVotos() {
+                try {
+                    const response = await fetch('/get_sessoes/?zona=' + document.getElementById('zona').value + '&sessao=' + document.getElementById('sessao').value); // URL da view Django
+                    if (!response.ok) {
+                        throw new Error("Erro ao buscar dados");
+                    }
+                    const data = await response.json();
+
+                    const sessoes = document.getElementById('sessao');
+
+                    while (sessoes.options.length > 0) {
+                        sessoes.remove(0);
+                    }
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'Selecione a sessão';
+                    sessoes.appendChild(option);
+
+                    data.sessoes.forEach((sessao) => {
+                        const option = document.createElement('option');
+                        option.value = sessao;
+                        option.textContent = sessao;
+                        sessoes.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            // Chama a função quando a página carrega
+            window.onload = buscarVotos;
+        </script>
+    </section>
 {% endblock %}
