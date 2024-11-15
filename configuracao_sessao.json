@@ -28,37 +28,24 @@
       "secoes": [
         {
           "idSecao": "001A",
-          "quantidadeEleitores": 1500
+          "quantidadeEleitores": 50
         },
         {
           "idSecao": "001B",
-          "quantidadeEleitores": 1200
+          "quantidadeEleitores": 10
         }
       ]
     },
-    {
+      {
       "idZona": "002",
       "secoes": [
         {
           "idSecao": "002A",
-          "quantidadeEleitores": 1000
+          "quantidadeEleitores": 20
         },
         {
           "idSecao": "002B",
-          "quantidadeEleitores": 950
-        }
-      ]
-    },
-    {
-      "idZona": "003",
-      "secoes": [
-        {
-          "idSecao": "003A",
-          "quantidadeEleitores": 800
-        },
-        {
-          "idSecao": "003B",
-          "quantidadeEleitores": 700
+          "quantidadeEleitores": 30
         }
       ]
     }

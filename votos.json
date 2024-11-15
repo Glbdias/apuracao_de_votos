@@ -1,12 +1,33 @@
 [{
   "idSecao": "001A",
   "idZona": "001",
-  "quantidadePresentes": 15,
-  "votosValidos": 10,
+  "quantidadePresentes": 30,
+  "votosValidos": 25,
   "candidatos": [
     {
       "nomeCandidato": "Carlos Silva",
-      "quantidadeVotos": 10
+      "quantidadeVotos": 5
+    },
+    {
+      "nomeCandidato": "Camila Freitas",
+      "quantidadeVotos": 20
     }
   ]
-}]
+},
+  {
+  "idSecao": "002B",
+  "idZona": "002",
+  "quantidadePresentes": 30,
+  "votosValidos": 25,
+  "candidatos": [
+    {
+      "nomeCandidato": "Carlos Silva",
+      "quantidadeVotos": 5
+    },
+    {
+      "nomeCandidato": "Camila Freitas",
+      "quantidadeVotos": 20
+    }
+  ]
+}
+]

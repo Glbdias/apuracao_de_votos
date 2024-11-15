@@ -2,163 +2,163 @@
 
 {% block content %}
 
-<style>
-    /* Estilos gerais */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-    }
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
-    /* Container do dashboard */
-    .dashboard-container {
-        max-width: 900px;
-        margin: 0 auto;
-    }
+        /* Container do dashboard */
+        .dashboard-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-    /* Estilo do título */
-    h1 {
-        text-align: center;
-        color: #333;
-    }
+        /* Estilo do título */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-    /* Card superior com campo de seleção e barra de progresso */
-    .selection-progress-container {
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 16px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        /* Card superior com campo de seleção e barra de progresso */
+        .selection-progress-container {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Estilo do campo select */
-    .city-select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 1em;
-        color: #333;
-        background-color: #f9f9f9;
-    }
+        /* Estilo do campo select */
+        .city-select, .zone-select, .session-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            color: #333;
+            background-color: #f9f9f9;
+        }
 
-    /* Barra de progresso */
-    .progress-bar {
-        height: 20px;
-        border-radius: 8px;
-        background-color: #ddd;
-        overflow: hidden;
-        margin-top: 10px;
-    }
+        /* Barra de progresso */
+        .progress-bar {
+            height: 20px;
+            border-radius: 8px;
+            background-color: #ddd;
+            overflow: hidden;
+            margin-top: 10px;
+        }
 
-    .progress-bar-fill {
-        height: 100%;
-        background-color: #4caf50;
-        width: 75%;
-    }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #4caf50;
+            width: 75%;
+        }
 
-    /* Container dos cards de candidatos */
-    .candidates-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: center;
-    }
+        /* Container dos cards de candidatos */
+        .candidates-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
 
-    /* Card de candidato */
-    .candidate-card {
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        width: 180px;
-        height: 180px;
-        padding: 16px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
+        /* Card de candidato */
+        .candidate-card {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 180px;
+            height: 180px;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-    .candidate-card h3 {
-        margin: 0;
-        font-size: 1.1em;
-        color: #333;
-    }
+        .candidate-card h3 {
+            margin: 0;
+            font-size: 1.1em;
+            color: #333;
+        }
 
-    .candidate-party {
-        font-size: 0.9em;
-        color: #777;
-        margin-bottom: 10px;
-    }
+        .candidate-party {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 10px;
+        }
 
-    .candidate-votes {
-        font-size: 1.3em;
-        font-weight: bold;
-        color: #333;
-    }
+        .candidate-votes {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .candidate-percentage {
-        font-size: 1em;
-        color: #4caf50;
-    }
-</style>
+        .candidate-percentage {
+            font-size: 1em;
+            color: #4caf50;
+        }
+    </style>
 
-<div class="dashboard-container">
-    <h1>Resultado da Votação</h1>
+    <div class="dashboard-container">
+        <h1>Resultado da Votação</h1>
 
-    <!-- Card superior com seleção de cidade e barra de progresso -->
-    <div class="selection-progress-container">
-        <!-- Campo select para a cidade -->
-        <select class="city-select">
-            <option value="">Selecione uma cidade</option>
-            <option value="cidade1">Caxias do Sul</option>
-            <option value="cidade2">Farroupilha</option>
-            <option value="cidade3">Bento</option>
-            <option value="cidade4">Flores da Cunha</option>
-        </select>
+        {{ candidatos }}
 
-        <!-- Barra de progresso -->
-        <h2>Progresso da Contagem de Votos</h2>
-        <div class="progress-bar">
-            <div class="progress-bar-fill" style="width: 75%;"></div>
-        </div>
-        <p>75% dos votos apurados</p>
-    </div>
+        <!-- Card superior com seleção de zona, sessão e barra de progresso -->
+        <div class="selection-progress-container">
+            <!-- Campo select para a Zona -->
+            <select class="zone-select" id="zona">
+                <option value="">Selecione uma Zona</option>
+                {% for zona in zonas %}
+                    <option value="{{ zona.id }}">{{ zona.nome }}</option>
+                {% endfor %}
+            </select>
 
-    <!-- Cards dos candidatos -->
-    <div class="candidates-container">
-        <div class="candidate-card">
-            <h3>Candidato 1</h3>
-            <p class="candidate-party">Partido XYZ</p>
-            <div class="candidate-votes">3,500 votos</div>
-            <div class="candidate-percentage">35%</div>
-        </div>
+            <!-- Campo select para a Sessão -->
+            <select class="session-select" id="sessao">
+                <option value="">Selecione uma Sessão</option>
+                {% for sessao in sessoes %}
+                    <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
+                {% endfor %}
+            </select>
 
-        <div class="candidate-card">
-            <h3>Candidato 2</h3>
-            <p class="candidate-party">Partido ABC</p>
-            <div class="candidate-votes">2,750 votos</div>
-            <div class="candidate-percentage">27.5%</div>
+            <!-- Barra de progresso -->
+            <h2>Progresso da Contagem de Votos</h2>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: {{ candidatos.percentualVotosValidos }}%;"></div>
+            </div>
+            <p>{{ candidatos.percentualVotosValidos }}% dos votos apurados</p>
         </div>
 
-        <div class="candidate-card">
-            <h3>Candidato 3</h3>
-            <p class="candidate-party">Partido LMN</p>
-            <div class="candidate-votes">1,200 votos</div>
-            <div class="candidate-percentage">12%</div>
-        </div>
-
-        <div class="candidate-card">
-            <h3>Candidato 4</h3>
-            <p class="candidate-party">Partido DEF</p>
-            <div class="candidate-votes">950 votos</div>
-            <div class="candidate-percentage">9.5%</div>
+        <!-- Cards dos candidatos -->
+        <div class="candidates-container">
+            {% for candidato in candidatos.candidatos %}
+                <div class="candidate-card">
+                    <h3>{{ candidato.nomeCandidato }}</h3>
+                    <div class="candidate-votes">{{ candidato.quantidadeVotos }} Votos</div>
+                    <div class="candidate-percentage">{{ candidato.percentualVotos }}%</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-</div>
+
+    <script>
+        document.getElementById('zona').addEventListener('change', function() {
+            var zonaSelecionada = this.value;
+        });
+
+        document.getElementById('sessao').addEventListener('change', function() {
+            var sessaoSelecionada = this.value;
+        });
+    </script>
+
 {% endblock %}

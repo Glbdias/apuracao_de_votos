@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Votos Esperados e Candidatos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f2f5;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    p {
+      color: #666;
+      font-size: 16px;
+    }
+    .input-area {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .input-group label {
+      font-size: 16px;
+      color: #333;
+    }
+    .input-group input {
+      padding: 10px;
+      border: 2px dashed #00aaff;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+    }
+    .input-group input:focus {
+      background: #f0faff;
+    }
+    .btn-submit {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #00aaff;
+      color: #fff;
+    }
+    .btn-submit:hover {
+      background-color: #007acc;
+    }
+    .feedback {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cadastro de Dados de Votação</h1>
+    <p>Insira a quantidade de votos esperados e de candidatos abaixo:</p>
+
+    <form id="votingForm" method="POST" action="/inicializa_votacao/">
+      {% csrf_token %}
+      <div class="input-area">
+        <div class="input-group">
+          <label for="expectedVotes">Quantidade de Votos Esperados</label>
+          <input type="number" id="expectedVotes" name="expectedVotes" placeholder="Digite a quantidade de votos esperados" min="1" required>
+        </div>
+        <div class="input-group">
+          <label for="candidateCount">Quantidade de Candidatos</label>
+          <input type="number" id="candidateCount" name="candidateCount" placeholder="Digite a quantidade de candidatos" min="1" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Cadastrar</button>
+      <div class="feedback" id="feedback">{{ mensagem }}</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('votingForm');
+    const feedback = document.getElementById('feedback');
+
+    // Impede números negativos nos campos de entrada
+    document.getElementById('expectedVotes').addEventListener('input', function() {
+      if (this.value < 0) this.value = 1;
+    });
+    document.getElementById('candidateCount').addEventListener('input', function() {
+      if (this.value < 0) this.value = 1;
+    });
+  </script>
+</body>
+</html>

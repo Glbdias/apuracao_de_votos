@@ -1,0 +1,189 @@
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+    margin: 0;
+  }
+  .container {
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  p {
+    color: #666;
+    font-size: 16px;
+  }
+  .upload-area {
+    margin: 20px 0;
+    padding: 30px;
+    border: 2px dashed #00aaff;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .upload-area:hover {
+    background: #f0faff;
+  }
+  .upload-area input {
+    display: none;
+  }
+  .file-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  .preview {
+    background: #1e1e1e;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 20px 0;
+  }
+  .buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .btn-upload {
+    background-color: #00aaff;
+    color: #fff;
+  }
+  .btn-clear {
+    background-color: #ff4d4d;
+    color: #fff;
+  }
+  .feedback {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .upload-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border: 2px dashed #00aaff;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .botao-continuar{
+    padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1em;
+  }
+</style>
+
+<body>
+  <div class="container" id="div-importacao">
+    <h1>IMPORTAR ARQUIVO JSON PARA CONFIGURAÇÃO DA APURAÇÃO DOS VOTOS</h1>
+
+    <form id="uploadForm" onsubmit="submitForm(event)">
+      {% csrf_token %}
+      <label class="upload-area">
+        <input type="file" accept=".json" id="fileInput" name="file">
+        <span>Selecione o arquivo JSON</span>
+      </label>
+      <div class="file-info" id="fileInfo"></div>
+
+      <div class="preview" id="filePreview">Pré-visualização JSON...</div>
+
+      <div class="buttons">
+        <button type="submit" class="btn btn-upload">Carregar</button>
+        <button type="button" class="btn btn-clear" onclick="clearFile()">Limpar</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </form>
+  </div>
+
+  <div class="container" id="div-sucesso" style="display: none">
+        <h1>Processamento Concluído</h1>
+        <p>O arquivo foi processado com sucesso!</p>
+        <a class="botao-continuar" href="{% url 'inicio:post_importacao' %}">Continuar</a>
+    </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const filePreview = document.getElementById('filePreview');
+    const feedback = document.getElementById('feedback');
+    const form = document.getElementById('uploadForm');
+
+    // Mostrar informações do arquivo
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        fileInfo.textContent = 'Arquivo: ' + file.name;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          filePreview.textContent = e.target.result;
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    // Função para limpar o campo de upload
+    function clearFile() {
+      fileInput.value = '';
+      fileInfo.textContent = '';
+      filePreview.textContent = 'Pré-visualização JSON...';
+      feedback.textContent = '';
+    }
+
+    // Função para enviar o formulário sem recarregar a página (AJAX)
+    function submitForm(event) {
+      event.preventDefault(); // Previne o comportamento padrão do form
+      const formData = new FormData(form);
+
+      // Usando fetch para enviar o arquivo
+      fetch('/configuracao_sessao/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        feedback.textContent = data.mensagem;
+        if (data.sucesso) {
+          document.getElementById('div-importacao').style.display = 'none';
+          document.getElementById('div-sucesso').style.display = '';
+          feedback.style.color = 'green';
+        }else{
+          feedback.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        feedback.textContent = 'Erro ao carregar o arquivo.';
+        feedback.style.color = 'red';
+      });
+    }
+  </script>
+</body>
