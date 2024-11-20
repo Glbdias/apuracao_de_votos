@@ -12,4 +12,5 @@ urlpatterns = [
     path('importacao/', views.post_importar, name='post_importacao'),
     path('inicializa_votacao/', views.inicializa_votacao, name='inicializa_votacao'),
     path('configuracao_sessao/', views.configuracao_sessao, name='configuracao_sessao'),
+    path('get_filtro_sessao_candidato/', views.get_candidattos_filtro, name='get_filtro_sessao_candidato'),
 ]

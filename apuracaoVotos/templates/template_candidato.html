@@ -1,0 +1,15 @@
+<h2>Candidatos e Porcentagens</h2>
+<div class="candidatos-container">
+    {% for candidato in candidatos.candidatos %}
+        <div class="candidato">
+            <img src="../static/images/chamber.webp" alt="Candidato A">
+            <p>{{ candidato.nomeCandidato }}</p>
+            <p><span id="votos-cand-a">{{ candidato.quantidadeVotos }}</span> votos</p>
+            <div class="barra-porcentagem-container">
+                <div style="width: {{ candidato.percentualVotos }}%;" class="barra-porcentagem"
+                     id="barra-a"></div>
+            </div>
+            <span class="porcentagem-texto" id="cand-a">{{ candidato.percentualVotos }}%</span>
+        </div>
+    {% endfor %}
+</div>

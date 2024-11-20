@@ -90,12 +90,6 @@
             color: #333;
         }
 
-        .candidate-party {
-            font-size: 0.9em;
-            color: #777;
-            margin-bottom: 10px;
-        }
-
         .candidate-votes {
             font-size: 1.3em;
             font-weight: bold;
@@ -106,25 +100,88 @@
             font-size: 1em;
             color: #4caf50;
         }
+
+
+        .candidatos-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .candidato {
+            background: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 30%;
+        }
+
+        .candidato img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .candidato p {
+            margin: 5px 0;
+        }
+
+        .barra-porcentagem-container {
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .barra-porcentagem {
+            height: 100%;
+            background-color: #007bff;
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .porcentagem-texto {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .barra-progresso-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .barra-progresso {
+            height: 100%;
+            background-color: #007bff;
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
     </style>
 
     <div class="dashboard-container">
         <h1>Resultado da Votação</h1>
 
-        {{ candidatos }}
 
         <!-- Card superior com seleção de zona, sessão e barra de progresso -->
         <div class="selection-progress-container">
             <!-- Campo select para a Zona -->
-            <select class="zone-select" id="zona">
+            <select class="zone-select" id="zonaCandidato" onchange="filtrarPorZonaCandidato(this.value)">
                 <option value="">Selecione uma Zona</option>
                 {% for zona in zonas %}
-                    <option value="{{ zona.id }}">{{ zona.nome }}</option>
+                    <option value="{{ zona }}">{{ zona }}</option>
                 {% endfor %}
             </select>
 
             <!-- Campo select para a Sessão -->
-            <select class="session-select" id="sessao">
+            <select class="session-select" id="sessaoCandidato" onchange="filtrarPorSessaoCandidato(this.value)">
                 <option value="">Selecione uma Sessão</option>
                 {% for sessao in sessoes %}
                     <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
@@ -134,31 +191,68 @@
             <!-- Barra de progresso -->
             <h2>Progresso da Contagem de Votos</h2>
             <div class="progress-bar">
-                <div class="progress-bar-fill" style="width: {{ candidatos.percentualVotosValidos }}%;"></div>
+                <div class="progress-bar-fill" id="campo-progresso-votacao"
+                     style="width: {{ candidatos.percentualVotosValidos }}%;"></div>
             </div>
-            <p>{{ candidatos.percentualVotosValidos }}% dos votos apurados</p>
-        </div>
-
-        <!-- Cards dos candidatos -->
-        <div class="candidates-container">
-            {% for candidato in candidatos.candidatos %}
-                <div class="candidate-card">
-                    <h3>{{ candidato.nomeCandidato }}</h3>
-                    <div class="candidate-votes">{{ candidato.quantidadeVotos }} Votos</div>
-                    <div class="candidate-percentage">{{ candidato.percentualVotos }}%</div>
-                </div>
-            {% endfor %}
+            <p><span id="percentual-candidato">{{ candidatos.percentualVotosValidos }}</span>% dos votos apurados</p>
         </div>
     </div>
 
-    <script>
-        document.getElementById('zona').addEventListener('change', function() {
-            var zonaSelecionada = this.value;
-        });
+    <section id="apuracao" class="tela">
+        {% include "template_candidato.html" %}
+    </section>
 
-        document.getElementById('sessao').addEventListener('change', function() {
-            var sessaoSelecionada = this.value;
-        });
+    <script>
+        async function filtrarPorZonaCandidato(zonaId) {
+            await buscarCandidatoSessao(true); // Chama novamente a função para atualizar os votos
+        }
+
+        async function filtrarPorSessaoCandidato(sessaoId) {
+            await buscarCandidatoSessao(false); // Chama novamente a função para atualizar os votos
+        }
+
+        async function buscarCandidatoSessao(carregaFiltro) {
+            try {
+                const response = await fetch('/get_filtro_sessao_candidato/?zona=' + document.getElementById('zonaCandidato').value + '&sessao=' + document.getElementById('sessaoCandidato').value); // URL da view Django
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar dados");
+                }
+                const data = await response.json();
+
+
+                if (data.status === 200) {
+                    if (carregaFiltro) {
+
+                        const sessoes = document.getElementById('sessaoCandidato');
+
+                        while (sessoes.options.length > 0) {
+                            sessoes.remove(0);
+                        }
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'Selecione a sessão';
+                        sessoes.appendChild(option);
+
+                        data.sessoes.forEach((sessao) => {
+                            const option = document.createElement('option');
+                            option.value = sessao;
+                            option.textContent = sessao;
+                            sessoes.appendChild(option);
+                        });
+                    }
+                    document.getElementById("percentual-candidato").innerText = data.percentual;
+                    document.getElementById('campo-progresso-votacao').style.width = data.percentual + '%';
+                    document.getElementById('apuracao').innerHTML = data.html;
+
+                } else {
+                    document.getElementById('recebe-informacao').innerText = data.chave;
+                }
+
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
     </script>
 
 {% endblock %}

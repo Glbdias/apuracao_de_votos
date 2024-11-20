@@ -1,85 +1,231 @@
 {% extends "base.html" %}
 {% block content %}
     <style>
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
+      body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
 
-        .card-votos {
-            flex-basis: calc(33.33% - 20px); /* Define 3 cards por linha */
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-        }
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
 
-        /* Responsivo: ajusta para 2 cards por linha em telas menores */
-        @media (max-width: 768px) {
-            .card-votos {
-                flex-basis: calc(50% - 20px); /* 2 cards por linha */
-            }
-        }
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
 
-        /* Responsivo: 1 card por linha em telas pequenas */
-        @media (max-width: 480px) {
-            .card-votos {
-                flex-basis: 100%; /* 1 card por linha */
-            }
-        }
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+section {
+    background: white;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filtros {
+    margin-bottom: 20px;
+}
+
+.filtros label {
+    margin-right: 10px;
+}
+
+.filtros select {
+    padding: 5px;
+    margin-right: 20px;
+}
+
+.candidatos-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.candidato {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.candidato img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.candidato p {
+    margin: 5px 0;
+}
+
+.barra-porcentagem-container {
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0;
+}
+
+.barra-porcentagem {
+    height: 100%;
+    background-color: #007bff;
+    width: 0;
+    transition: width 1s ease;
+}
+
+.porcentagem-texto {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.barra-progresso-container {
+    width: 100%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+    position: relative;
+}
+
+.barra-progresso {
+    height: 100%;
+    background-color: #007bff;
+    width: 0;
+    transition: width 1s ease-in-out;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #007bff;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+.filtros-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px; /* Espaço entre os filtros */
+    margin-bottom: 20px;
+}
+
+.filtros-container div {
+    flex: 1;
+}
+
+.filtros-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filtros-container select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#zona-sessao h2 {
+    text-align: center;
+}
+h2 {
+    text-align: center;
+}
+.dados-apuracao {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Espaçamento entre os quadrados */
+    flex-wrap: wrap; /* Faz com que os quadrados quebrem linha quando necessário */
+}
+
+.quadrado {
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 30%; /* Largura dos quadrados (ajuste conforme necessário) */
+    text-align: center; /* Centraliza o texto dentro do quadrado */
+}
+
+@media (max-width: 768px) {
+    .quadrado {
+        width: 45%; /* Ajusta a largura em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .quadrado {
+        width: 100%; /* Faz os quadrados ficarem em uma coluna em telas muito pequenas */
+    }
+}
+
     </style>
 
-    <section id="apuracao" class="tela" style="max-width: 1200px; margin: 0 auto; padding: 30px;">
-        <h2 style="text-align: center; font-size: 32px; font-weight: bold; margin-bottom: 20px;">{{ nome_eleicao }}</h2>
-        <h3 style="text-align: center; font-size: 20px; margin-bottom: 30px;">SELECIONE A ZONA E A SESSÃO</h3>
+    <section id="apuracao" class="tela" style="margin: 0 auto; padding: 30px;">
+            <h2>{{ nome_eleicao }}</h2>
 
-        <!-- Filtros em uma linha com espaçamento adequado -->
-        <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 40px;">
-            <!-- Filtro de Zona -->
-            <div style="flex: 1; max-width: 400px;">
-                <label for="zona" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a
-                    Zona</label>
-                <select id="zona" class="select-card" onchange="filtrarPorZona(this.value)"
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
-                    <option value="">Todas Zonas</option>
-                    {% for zona in zonas %}
-                        <option value="{{ zona }}">{{ zona }}</option>
-                    {% endfor %}
-                </select>
+            <!-- Filtros lado a lado -->
+            <div class="filtros-container">
+                <div>
+                    <label for="zona">Selecione a Zona:</label>
+                    <select id="zona" class="select-card" onchange="filtrarPorZona(this.value)"
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
+                <option value="">Todas Zonas</option>
+                {% for zona in zonas %}
+                    <option value="{{ zona }}">{{ zona }}</option>
+                {% endfor %}
+            </select>
+                </div>
+
+                <div>
+                    <label for="sessao">Selecione a Sessão:</label>
+                    <select id="sessao" class="select-card" onchange="filtrarPorSessao(this.value)"
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
+                <option value="">Selecione a Sessão</option>
+                {% for sessao in sessoes %}
+                    <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
+                {% endfor %}
+            </select>
+                </div>
             </div>
 
-            <!-- Filtro de Sessão -->
-            <div style="flex: 1; max-width: 400px;">
-                <label for="sessao" style="font-weight: bold; display: block; margin-bottom: 8px;">Selecione a
-                    Sessão</label>
-                <select id="sessao" class="select-card" onchange="filtrarPorSessao(this.value)"
-                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; background-color: #f4f7fa;">
-                    <option value="">Selecione a Sessão</option>
-                    {% for sessao in sessoes %}
-                        <option value="{{ sessao.id }}">{{ sessao.nome }}</option>
-                    {% endfor %}
-                </select>
+            <div class="dados-apuracao">
+                <div class="quadrado">
+                    <p>Total de Votos: <span id="total-votos">{{ totalVotos }}</span></p>
+                </div>
+                <div class="quadrado">
+                    <p>Apurados:<span id="votos-apurados">{{ votosApurados }}</span></p>
+                </div>
+                <div class="quadrado">
+                    <p>Percentual: <span id="votos-percentual">{{ percentual_votos }}</span> %</p>
+                </div>
+                <div class="quadrado">
+                    <p>Total de Sessões: <span id="total-sessoes">{{ total_sessoes }}</span></p>
+                </div>
+                <div class="quadrado">
+                    <p>Total Importadas: <span id="total-importadas">{{ sessoes_importadas }}</span></p>
+                </div>
+
             </div>
-        </div>
-
-        <!-- Exibição de votos e resultados -->
-        <div class="card-container">
-
-            <div class="card-votos">Total de Votos: <span id="total-votos">{{ totalVotos }}</span></div>
-            <div class="card-votos">Apurados: <span id="votos-apurados">{{ votosApurados }}</span></div>
-            <div class="card-votos">Percentual: <span id="votos-percentual">{{ percentual_votos }}</span> %</div>
-            {#            <div class="card-votos">Abstenção: <span id="votos-abstencao">{{ abstencao }}</span></div>#}
-
-            <div class="card-votos">Total de Sessões: <span id="total-votos">{{ total_sessoes }}</span></div>
-            <div class="card-votos">Total Importadas: <span id="total-votos">{{ sessoes_importadas }}</span></div>
-            <div class="card-votos">Percentual: <span id="total-votos">{{ percentual_sessao }} %</span></div>
-        </div>
 
         <div>
             <p style="text-align: center;color: red;text-transform: uppercase;" id="recebe-informacao"></p>

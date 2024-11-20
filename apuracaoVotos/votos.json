@@ -1,8 +1,8 @@
 [{
   "idSecao": "001A",
   "idZona": "001",
-  "quantidadePresentes": 30,
-  "votosValidos": 25,
+  "quantidadePresentes": 50,
+  "votosValidos": 50,
   "candidatos": [
     {
       "nomeCandidato": "Carlos Silva",
@@ -11,6 +11,10 @@
     {
       "nomeCandidato": "Camila Freitas",
       "quantidadeVotos": 20
+    },
+    {
+      "nomeCandidato": "Joaquim Ramos",
+      "quantidadeVotos": 25
     }
   ]
 },
